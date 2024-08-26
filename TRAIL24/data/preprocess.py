@@ -4,7 +4,7 @@
 __all__ = ['weekday_average', 'day_segment_average', 'total_energy_used', 'average_energy_used', 'weekend_businessday_avg',
            'resample_building_data']
 
-# %% ../../nbs/00_data.preprocess.ipynb 3
+# %% ../../nbs/00_data.preprocess.ipynb 4
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -12,12 +12,12 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 import matplotlib.pyplot as plt
 
-# %% ../../nbs/00_data.preprocess.ipynb 4
+# %% ../../nbs/00_data.preprocess.ipynb 5
 def weekday_average(data):
     weekday_avgs = data.groupby(data.index.weekday).mean() * 24
     return weekday_avgs.values.flatten()
 
-# %% ../../nbs/00_data.preprocess.ipynb 5
+# %% ../../nbs/00_data.preprocess.ipynb 6
 def day_segment_average(data):
     segments = {
         'early_morning': (7, 9),
@@ -40,11 +40,11 @@ def day_segment_average(data):
         averages.append(energy)
     return np.array(averages).flatten()
 
-# %% ../../nbs/00_data.preprocess.ipynb 6
+# %% ../../nbs/00_data.preprocess.ipynb 7
 def total_energy_used(data):
     return data.sum()
 
-# %% ../../nbs/00_data.preprocess.ipynb 7
+# %% ../../nbs/00_data.preprocess.ipynb 8
 def average_energy_used(data):
     hourly_avg = data.mean()
     daily_avg = data.resample('D').sum().mean()
@@ -52,13 +52,13 @@ def average_energy_used(data):
     monthly_avg = data.resample('ME').sum().mean()
     return np.array([hourly_avg, daily_avg, weekly_avg, monthly_avg]).flatten()
 
-# %% ../../nbs/00_data.preprocess.ipynb 8
+# %% ../../nbs/00_data.preprocess.ipynb 9
 def weekend_businessday_avg(data):
     weekends_avg = data[data.index.weekday >= 5].resample('D').sum().mean() 
     business_days_avg = data[data.index.weekday < 5].resample('D').sum().mean()
     return np.array([weekends_avg, business_days_avg]).flatten()
 
-# %% ../../nbs/00_data.preprocess.ipynb 9
+# %% ../../nbs/00_data.preprocess.ipynb 10
 def resample_building_data(group):
     group = group.reset_index(level='ID')
     # Specify columns explicitly for summing

@@ -3,10 +3,10 @@
 # %% auto 0
 __all__ = ['calculate_wcss', 'plot_elbow_method']
 
-# %% ../../nbs/01_data.cluster.ipynb 3
+# %% ../../nbs/01_data.cluster.ipynb 4
 from sklearn.cluster import KMeans
 
-# %% ../../nbs/01_data.cluster.ipynb 4
+# %% ../../nbs/01_data.cluster.ipynb 5
 def calculate_wcss(data, max_k):
     wcss = []
     for k in range(1, max_k + 1):
@@ -15,7 +15,7 @@ def calculate_wcss(data, max_k):
         wcss.append(kmeans.inertia_)
     return wcss
 
-# %% ../../nbs/01_data.cluster.ipynb 5
+# %% ../../nbs/01_data.cluster.ipynb 6
 def plot_elbow_method(wcss, max_k):
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, max_k + 1), wcss, marker='o')
