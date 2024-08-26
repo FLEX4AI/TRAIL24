@@ -16,5 +16,15 @@ website:
     search: true
   sidebar:
     style: floating
+    contents:
+    - section: Data
+      contents:
+      - 00_data.preprocess.ipynb
+      - 01_data.cluster.ipynb
+    - section: Experiments
+      contents:
+      - 05_experiment.preprocess.ipynb
+      - 06_experiment.cluster.ipynb
+      - 07_experiment.interpret.ipynb
 
-metadata-files: [nbdev.yml, sidebar.yml]
+metadata-files: [nbdev.yml]
