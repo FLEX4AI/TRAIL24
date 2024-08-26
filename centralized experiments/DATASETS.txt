@@ -1,0 +1,12 @@
+all-data              ==>                     https://www.kaggle.com/datasets/mohamedtaherbenyemna/all-data/data
+
+test_buildings        ==>                     https://www.kaggle.com/datasets/mohamedtaherbenyemna/test-buildings/data
+
+dataset               ==>                     https://www.kaggle.com/datasets/mohamedtaherbenyemna/dataset/data
+
+labeled_dataset       ==>                     https://www.kaggle.com/datasets/mohamedtaherbenyemna/labeled-dataset/data
+
+big-label-1           ==>                     https://www.kaggle.com/datasets/mohamedtaherbenyemna/big-label-1/data
+
+big-label-2           ==>                     https://www.kaggle.com/datasets/mohamedtaherbenyemna/big-label-2/data
+

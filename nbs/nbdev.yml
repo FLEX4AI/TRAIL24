@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "TRAIL24"
+  site-url: "https://nathanhubens.github.io/TRAIL24"
+  description: "a small library for TRAIL24 workshop"
+  repo-branch: main
+  repo-url: "https://github.com/nathanhubens/TRAIL24"
