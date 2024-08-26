@@ -6,4 +6,5 @@ d = { 'settings': { 'branch': 'main',
                 'git_url': 'https://github.com/nathanhubens/TRAIL24',
                 'lib_path': 'TRAIL24'},
   'syms': { 'TRAIL24.core': {'TRAIL24.core.foo': ('core.html#foo', 'TRAIL24/core.py')},
-            'TRAIL24.data.preprocess': {'TRAIL24.data.preprocess.preprocess': ('core.html#preprocess', 'TRAIL24/data/preprocess.py')}}}
+            'TRAIL24.data.preprocess': { 'TRAIL24.data.preprocess.preprocess': ( 'data.preprocess.html#preprocess',
+                                                                                 'TRAIL24/data/preprocess.py')}}}
