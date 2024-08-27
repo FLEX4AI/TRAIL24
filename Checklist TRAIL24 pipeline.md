@@ -16,6 +16,7 @@
 
 - [x] Create Git repo for new pipeline
 - [ ] Add docs to functions
+- [x] Add Obsidian Checklist file to git
 - [ ] Add dataset to DVC
 - [ ] Add MAE and RMSE metrics
 - [ ] 
@@ -27,9 +28,9 @@
 
 # Remarks
 
-- [Nvidia paper](https://arxiv.org/pdf/2312.17100) suggests NOT to choose a model based on a single metric. It is better to include MAE and RMSE error on top of SMAPE. Final model selection should take into account both metrics.
+- [NVIDIA paper](https://arxiv.org/pdf/2312.17100) suggests NOT to choose a model based on a single metric. It is better to include MAE and RMSE error on top of SMAPE. Final model selection should take into account both metrics.
 
 - NBEATS and NHITS show poor performances when context length (or lookback length is below 256 data points). This can explain why XGBoost is more suited to our case (10 data points) following the results obtained by Taher.
 
-- M
+- XGBoost takes roughly twice more time to be trained according to the NVIDIA paper. Taher observed the reverse effect -> Is it due to the size of NBEATS and NHITS ?
 
