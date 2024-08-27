@@ -15,12 +15,16 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score
 import matplotlib.pyplot as plt
 
 # %% ../../nbs/00_data.preprocess.ipynb 5
-def weekday_average(data:list[float])->list[float]:
+def weekday_average(data:dict # pandas dictionnary containing the data
+                   )->list[float]:
+    "compute the weekday average"
     weekday_avgs = data.groupby(data.index.weekday).mean() * 24
     return weekday_avgs.values.flatten()
 
 # %% ../../nbs/00_data.preprocess.ipynb 6
-def day_segment_average(data:list[float])->list[float]:
+def day_segment_average(data:dict # pandas dictionnary containing the data
+                       )->list[float]:
+    "compute the daily average"
     segments = {
         'early_morning': (7, 9),
         'morning': (9, 13),
@@ -43,11 +47,14 @@ def day_segment_average(data:list[float])->list[float]:
     return np.array(averages).flatten()
 
 # %% ../../nbs/00_data.preprocess.ipynb 7
-def total_energy_used(data:list[float])->float:
+def total_energy_used(data:dict # pandas dictionnary containing the data
+                     )->float:
     return data.sum()
 
 # %% ../../nbs/00_data.preprocess.ipynb 8
-def average_energy_used(data:list[float])->list[float]:
+def average_energy_used(data:dict # pandas dictionnary containing the data
+                       )->list[float]:
+    "compute the average energy used"
     hourly_avg = data.mean()
     daily_avg = data.resample('D').sum().mean()
     weekly_avg = data.resample('W').sum().mean()
@@ -55,13 +62,17 @@ def average_energy_used(data:list[float])->list[float]:
     return np.array([hourly_avg, daily_avg, weekly_avg, monthly_avg]).flatten()
 
 # %% ../../nbs/00_data.preprocess.ipynb 9
-def weekend_businessday_avg(data:list[float])->list[float]:
+def weekend_businessday_avg(data:dict # pandas dictionnary containing the data
+                           )->list[float]:
+    "compute the weekend average"
     weekends_avg = data[data.index.weekday >= 5].resample('D').sum().mean() 
     business_days_avg = data[data.index.weekday < 5].resample('D').sum().mean()
     return np.array([weekends_avg, business_days_avg]).flatten()
 
 # %% ../../nbs/00_data.preprocess.ipynb 10
-def resample_building_data(group:dict)->dict:
+def resample_building_data(group:dict # pandas dictionnary containing the building data
+                          )->dict:
+    "resample the building data"
     group = group.reset_index(level='ID')
     # Specify columns explicitly for summing
     resampled_group = group.resample('h').agg({'consumption': 'sum'})  # Example if 'consumption' is your numeric column

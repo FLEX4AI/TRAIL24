@@ -9,15 +9,11 @@ __all__ = ['calculate_wcss', 'plot_elbow_method']
 from sklearn.cluster import KMeans
 import pandas as pd
 
-# %% ../../nbs/01_data.cluster.ipynb 5
-<<<<<<< HEAD
-def calculate_wcss(data:list[float], max_k:int)->float:
-=======
-def calculate_wcss(data: pd.DataFrame, # the input dataframe
+# %% ../../nbs/01_data.cluster.ipynb 6
+def calculate_wcss(data: list[float], # the input dataframe
                    max_k: int # the number of clusters
                   ) -> float:
     "compute the WCSS metric"
->>>>>>> origin/func_comments
     wcss = []
     for k in range(1, max_k + 1):
         kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
@@ -25,8 +21,11 @@ def calculate_wcss(data: pd.DataFrame, # the input dataframe
         wcss.append(kmeans.inertia_)
     return wcss
 
-# %% ../../nbs/01_data.cluster.ipynb 6
-def plot_elbow_method(wcss:list[float], max_k:int):
+# %% ../../nbs/01_data.cluster.ipynb 9
+def plot_elbow_method(wcss:list[float], # the wcss metric to plot
+                      max_k:int # the number of clusters
+                     ):
+    "plot the graph of the wcss metric as a function of the number of clusters"
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, max_k + 1), wcss, marker='o')
     plt.title('Elbow Method for Optimal k')
