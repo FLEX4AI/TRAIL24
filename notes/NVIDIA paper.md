@@ -4,7 +4,7 @@
 
 --- 
 
-# Remarks
+# Observations
 
 - [NVIDIA paper](https://arxiv.org/pdf/2312.17100) suggests NOT to choose a model based on a single metric. It is better to include MAE and RMSE error on top of SMAPE. Final model selection should take into account both metrics.
 

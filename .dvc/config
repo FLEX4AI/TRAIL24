@@ -1,0 +1,6 @@
+[core]
+    remote = remote
+    autostage = true
+['remote "remote"']
+    url=s3://datatest
+    endpointurl = https://minio-api.tsw24.cetic.be
