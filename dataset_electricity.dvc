@@ -1,0 +1,6 @@
+outs:
+- md5: 5af84631e9b3c3fc196361091ffb9100.dir
+  size: 7498049968
+  nfiles: 7281
+  hash: md5
+  path: dataset_electricity
