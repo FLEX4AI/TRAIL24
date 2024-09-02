@@ -58,7 +58,7 @@ def average_energy_used(data:dict # pandas dictionnary containing the data
     hourly_avg = data.mean()
     daily_avg = data.resample('D').sum().mean()
     weekly_avg = data.resample('W').sum().mean()
-    monthly_avg = data.resample('ME').sum().mean()
+    monthly_avg = data.resample('M').sum().mean()
     return np.array([hourly_avg, daily_avg, weekly_avg, monthly_avg]).flatten()
 
 # %% ../../nbs/00_data.preprocess.ipynb 9

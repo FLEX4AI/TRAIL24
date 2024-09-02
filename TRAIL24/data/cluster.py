@@ -8,6 +8,7 @@ __all__ = ['calculate_wcss', 'plot_elbow_method']
 # %% ../../nbs/01_data.cluster.ipynb 4
 from sklearn.cluster import KMeans
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # %% ../../nbs/01_data.cluster.ipynb 6
 def calculate_wcss(data: list[float], # the input dataframe
