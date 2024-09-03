@@ -1,6 +1,9 @@
 [core]
-    remote = remote
+    remote = nom_du_remote
     autostage = true
 ['remote "remote"']
-    url=s3://datatest
+    url = s3://datatest
+    endpointurl = https://minio-api.tsw24.cetic.be
+['remote "nom_du_remote"']
+    url = s3://dataclusters
     endpointurl = https://minio-api.tsw24.cetic.be
