@@ -1,6 +1,9 @@
 _docs/
 _proc/
 
+*.onnx
+*.pt
+*.pth
 *.bak
 .gitattributes
 .last_checked
