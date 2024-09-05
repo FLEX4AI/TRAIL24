@@ -6,4 +6,5 @@ website:
       - 01_data.cluster.ipynb
       - 05_experiment.preprocess.ipynb
       - 06_experiment.cluster.ipynb
+      - 06_experiment.tahercluster.ipynb
       - 07_experiment.interpret.ipynb

@@ -24,6 +24,7 @@ website:
     - section: Experiments
       contents:
       - 05_experiment.preprocess.ipynb
+      - 06_experiment.tahercluster.ipynb
       - 06_experiment.cluster.ipynb
       - 07_experiment.interpret.ipynb
 

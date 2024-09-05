@@ -119,7 +119,8 @@ def weekly_monthly_statistics(data: pd.Series
 
 # %% ../../nbs/01_data.cluster.ipynb 13
 def revert_umap_projection_2D(umap_value_1:float, # first umap coeff
-                              umap_value_2:float # second umap coeff
+                              umap_value_2:float, # second umap coeff
+                              umap_df_2d:pd.DataFrame
                              ) -> int:
     "Find the data that corresponds to the UMAP projection in 2D"
     
@@ -139,7 +140,8 @@ def revert_umap_projection_2D(umap_value_1:float, # first umap coeff
 # %% ../../nbs/01_data.cluster.ipynb 14
 def revert_umap_projection_3D(umap_value_1, # first umap coeff
                               umap_value_2, # second umap coeff
-                              umap_value_3 # third umap coeff
+                              umap_value_3, # third umap coeff
+                              umap_df_3d:pd.DataFrame
                              ) -> int:
     "Find the data that corresponds to the UMAP projection in 3D"
     
