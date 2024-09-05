@@ -4,7 +4,8 @@
 
 # %% auto 0
 __all__ = ['weekday_average', 'day_segment_average', 'total_energy_used', 'average_energy_used', 'weekend_businessday_avg',
-           'resample_building_data']
+           'resample_building_data', 'optimize_data_types', 'create_lagged_features', 'preprocess_dataframe',
+           'scale_features', 'finalize_dataframe']
 
 # %% ../../nbs/00_data.preprocess.ipynb 4
 import pandas as pd
@@ -13,6 +14,9 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder
+import gc
+from tqdm.notebook import tqdm
 
 # %% ../../nbs/00_data.preprocess.ipynb 5
 def weekday_average(data:dict # pandas dictionnary containing the data
@@ -79,3 +83,123 @@ def resample_building_data(group:dict # pandas dictionnary containing the buildi
     resampled_group['ID'] = group['ID'].iloc[0]  # Handle non-numeric separately if needed
     resampled_group = resampled_group.set_index('ID', append=True)
     return resampled_group
+
+# %% ../../nbs/00_data.preprocess.ipynb 11
+def optimize_data_types(df):
+
+    for col in df.select_dtypes(include=['int']).columns:
+        df[col] = df[col].astype('int32')
+    
+    for col in df.select_dtypes(include=['float']).columns:
+        df[col] = df[col].astype('float32')
+
+    for col in df.select_dtypes(include=['object']).columns:
+        num_unique_values = len(df[col].unique())
+        num_total_values = len(df[col])
+        if num_unique_values / num_total_values < 0.5:
+            df[col] = df[col].astype('category')
+    
+    return df
+
+# %% ../../nbs/00_data.preprocess.ipynb 12
+def create_lagged_features(df, window_size=40, start_date='2009-07-14 00:00:00'):
+
+    data = []
+    columns = [f'lag_{i}' for i in range(1, window_size+1)] + ['year', 'month', 'day', 'hour', 'target']
+    base_date = pd.Timestamp(start_date)
+
+    for i, row in tqdm(df.iterrows(), total=df.shape[0]):
+        values = row.values
+        for t in range(window_size, len(values)):
+            lagged_inputs = values[t-window_size:t]
+            target_value = values[t]
+
+            # Calculate the corresponding date and time
+            timestamp = base_date + pd.Timedelta(hours=t)
+            year, month, day, hour = timestamp.year, timestamp.month, timestamp.day, timestamp.hour
+
+            data.append(list(lagged_inputs) + [year, month, day, hour, target_value])
+
+    df_transformed = pd.DataFrame(data, columns=columns)
+    return df_transformed
+
+# %% ../../nbs/00_data.preprocess.ipynb 13
+def create_lagged_features(df, window_size=40, start_date='2009-07-14 00:00:00'):
+
+    data = []
+    columns = [f'lag_{i}' for i in range(1, window_size+1)] + ['year', 'month', 'day', 'hour', 'target']
+    base_date = pd.Timestamp(start_date)
+
+    for i, row in tqdm(df.iterrows(), total=df.shape[0]):
+        values = row.values
+        for t in range(window_size, len(values)):
+            lagged_inputs = values[t-window_size:t]
+            target_value = values[t]
+
+            # Calculate the corresponding date and time
+            timestamp = base_date + pd.Timedelta(hours=t)
+            year, month, day, hour = timestamp.year, timestamp.month, timestamp.day, timestamp.hour
+
+            data.append(list(lagged_inputs) + [year, month, day, hour, target_value])
+
+    df_transformed = pd.DataFrame(data, columns=columns)
+    return df_transformed
+
+# %% ../../nbs/00_data.preprocess.ipynb 14
+def preprocess_dataframe(df, window_size=40, chunk_size=100):
+
+    # Optimize data types
+    df = optimize_data_types(df)
+    
+    # Remove the first and last columns
+    df = df.iloc[:, 1:-1]
+
+    # Process the data in chunks to create lagged features
+    processed_data = []
+    for start_row in tqdm(range(0, df.shape[0], chunk_size)):
+        chunk = df.iloc[start_row:start_row + chunk_size]
+        df_chunk_transformed = create_lagged_features(chunk, window_size=window_size)
+        processed_data.append(df_chunk_transformed)
+
+    df_transformed = pd.concat(processed_data, ignore_index=True)
+
+    # Make sure year, month, day, and hour columns are integers
+    for col in ['year', 'month', 'day', 'hour']:
+        df_transformed[col] = df_transformed[col].astype(int)
+
+    # Create datetime column
+    df_transformed['date_time'] = pd.to_datetime(df_transformed[['year', 'month', 'day', 'hour']])
+
+    # Apply OrdinalEncoder to the month, day, and hour columns
+    ordinal_encoder = OrdinalEncoder()
+    df_transformed[['month', 'day', 'hour']] = ordinal_encoder.fit_transform(df_transformed[['month', 'day', 'hour']])
+
+    return df_transformed
+
+# %% ../../nbs/00_data.preprocess.ipynb 15
+def scale_features(train, test, columns_to_scale):
+
+    scaler = StandardScaler()
+
+    # Fit scaler on training data and apply the same transformation to both train and test data
+    train[columns_to_scale] = scaler.fit_transform(train[columns_to_scale])
+    test[columns_to_scale] = scaler.transform(test[columns_to_scale])
+
+    return train, test
+
+# %% ../../nbs/00_data.preprocess.ipynb 16
+def finalize_dataframe(df_transformed, train_start_date, train_end_date, test_start_date, test_end_date):
+
+    # Create the datetime index and sort
+    df_transformed.set_index('date_time', inplace=True)
+    df_transformed = df_transformed.sort_index()
+
+    # Split into training and testing sets
+    train = df_transformed.loc[train_start_date:train_end_date]
+    test = df_transformed.loc[test_start_date:test_end_date]
+
+    # Drop unnecessary columns like year, month, day, hour, and target
+    #train = train.drop(columns=['year', 'month', 'day', 'hour', 'target'])
+    #test = test.drop(columns=['year', 'month', 'day', 'hour', 'target'])
+
+    return train, test
